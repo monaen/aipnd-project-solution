@@ -39,12 +39,12 @@ def main():
         for param in model.parameters():
             param.requires_grad = False
         classifier = nn.Sequential(OrderedDict([
-                                        ('1',  nn.Linear(1024, 550)),
-                                        ('2',  nn.ReLU()),
-                                        ('3',  nn.Dropout(0.5)),
-                                        ('4',  nn.Linear(550, 200)),
-                                        ('5',  nn.ReLU()),
-                                        ('13', nn.Linear(200, 102)),
+                                        ('input',  nn.Linear(1024, 550)),
+                                        ('relu1',  nn.ReLU()),
+                                        ('dropout1',  nn.Dropout(0.5)),
+                                        ('linear2',  nn.Linear(550, 200)),
+                                        ('relu2',  nn.ReLU()),
+                                        ('linear3', nn.Linear(200, 102)),
                                         ('output', nn.LogSoftmax(dim=1))
                                        ]))            
         
@@ -55,12 +55,12 @@ def main():
         for param in model.parameters():
             param.requires_grad = False
         classifier = nn.Sequential(OrderedDict([
-                                        ('1',  nn.Linear(25088, 5000)),
-                                        ('2',  nn.ReLU()),
-                                        ('3',  nn.Dropout(0.5)),
-                                        ('4',  nn.Linear(5000, 500)),
-                                        ('5',  nn.ReLU()),
-                                        ('13', nn.Linear(500, 102)),
+                                        ('input',  nn.Linear(25088, 5000)),
+                                        ('relu1',  nn.ReLU()),
+                                        ('dropout1',  nn.Dropout(0.5)),
+                                        ('linear2',  nn.Linear(5000, 500)),
+                                        ('relu2',  nn.ReLU()),
+                                        ('linear3', nn.Linear(500, 102)),
                                         ('output', nn.LogSoftmax(dim=1))
                                        ])) 
     
@@ -142,7 +142,7 @@ def train_model(model, dataloaders, criterion, optimizer, epochs=10, cuda=False)
     
     print_every = 25
     
-    if cuda:
+    if cuda and torch.cuda.is_available:
         model.cuda()
     else:
         model.cpu()

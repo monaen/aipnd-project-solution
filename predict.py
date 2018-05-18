@@ -60,7 +60,10 @@ def process_image(image):
     Returns:
     
     '''
-    image = image.resize((256, 256))
+    image_ratio = image.size[1] / image.size[0]
+    image = image.resize((256, int(image_ratio*256)))
+    # left, upper, right, lower
+#     image = image.crop((16, 16, 224, 224))
     half_the_width = image.size[0] / 2
     half_the_height = image.size[1] / 2
     image = image.crop((half_the_width - 112,
@@ -68,13 +71,13 @@ def process_image(image):
                        half_the_width + 112,
                        half_the_height + 112))
     
-    np_image = np.array(image)
-    np_image = np.array(np_image)/255
+    image = np.array(image)
+    image = image/255
     
     mean = np.array([0.485, 0.456, 0.406])
     std_dev = np.array([0.229, 0.224, 0.225])
     
-    image = (np_image - mean) / std_dev
+    image = (image - mean) / std_dev
     image = image.transpose((2, 0, 1))
     
     return torch.from_numpy(image)
